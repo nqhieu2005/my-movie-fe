@@ -36,7 +36,7 @@ function Header() {
       .catch((err) => console.error("Error fetching categories:", err));
 
     // Fetch countries
-    fetch("https://my-movies-be.onrender.com//api/country")
+    fetch("https://my-movies-be.onrender.com/api/country")
       .then((res) => res.json())
       .then((data) => setCountries(data))
       .catch((err) => console.error("Error fetching countries:", err));
