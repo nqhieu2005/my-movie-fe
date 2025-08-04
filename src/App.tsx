@@ -4,6 +4,7 @@ import Header from './components/Header'
 import Copyright from './components/Copyright';
 import HomePage from './pages/HomePage';
 import MovieDetail from './pages/MovieDetail';
+import FilterPage from './pages/FilterPage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/movies/:slug" element={<MovieDetail />} />
+          <Route path="/filter" element={<FilterPage />} />
         </Routes>
       </main>
       <Copyright />

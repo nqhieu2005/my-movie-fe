@@ -12,20 +12,32 @@ function Header() {
   const [countries, setCountries] = useState<Category[]>([]);
   const [isHoveringCategory, setIsHoveringCategory] = useState(false);
   const [isHoveringCountry, setIsHoveringCountry] = useState(false);
+  const [isHoveringDanhMuc, setIsHoveringDanhMuc] = useState(false); // Thêm state cho Danh mục
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Danh sách các type_list
+  const typeList = [
+    { value: "phim-bo", name: "Phim Bộ" },
+    { value: "phim-le", name: "Phim Lẻ" },
+    { value: "tv-shows", name: "TV Shows" },
+    { value: "hoat-hinh", name: "Hoạt Hình" },
+    { value: "phim-vietsub", name: "Phim Vietsub" },
+    { value: "phim-thuyet-minh", name: "Phim Thuyết Minh" },
+    { value: "phim-long-tieng", name: "Phim Lồng Tiếng" },
+  ];
 
   useEffect(() => {
     // Fetch categories
-    fetch('http://localhost:4000/api/categories')
-      .then(res => res.json())
-      .then(data => setCategories(data))
-      .catch(err => console.error('Error fetching categories:', err));
+    fetch("http://localhost:4000/api/categories")
+      .then((res) => res.json())
+      .then((data) => setCategories(data))
+      .catch((err) => console.error("Error fetching categories:", err));
 
     // Fetch countries
-    fetch('http://localhost:4000/api/country')
-      .then(res => res.json())
-      .then(data => setCountries(data))
-      .catch(err => console.error('Error fetching countries:', err));
+    fetch("http://localhost:4000/api/country")
+      .then((res) => res.json())
+      .then((data) => setCountries(data))
+      .catch((err) => console.error("Error fetching countries:", err));
   }, []);
 
   return (
@@ -33,39 +45,93 @@ function Header() {
       <div className="max-w-7xl mx-auto flex items-center justify-between relative">
         {/* Logo */}
         <div className="flex items-center space-x-2">
-          <Link to="https://www.facebook.com/nq.hie.05" className="flex items-center group">
-            <img 
-              src="/logo.png" 
-              alt="Logo" 
-              className="h-10 w-14 object-contain transform transition-transform hover:scale-110 duration-300" 
+          <Link
+            to="https://www.facebook.com/nq.hie.05"
+            className="flex items-center group"
+          >
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="h-10 w-14 object-contain transform transition-transform hover:scale-110 duration-300"
             />
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent ml-2 hover:from-purple-500 hover:to-blue-400 transition-all duration-300">
-            </span>
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent ml-2 hover:from-purple-500 hover:to-blue-400 transition-all duration-300"></span>
           </Link>
         </div>
-        
+
         {/* Desktop Navigation */}
         <nav className="hidden md:block">
           <ul className="flex items-center space-x-8">
             <li className="relative">
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="text-gray-300 hover:text-white transition-all duration-300 text-lg font-medium relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-blue-400 after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:after:w-full"
               >
                 Trang chủ
               </Link>
             </li>
             
+            {/* Danh mục Dropdown - Updated */}
+            <li
+              className="relative group"
+              onMouseEnter={() => setIsHoveringDanhMuc(true)}
+              onMouseLeave={() => setIsHoveringDanhMuc(false)}
+            >
+              <div className="text-gray-300 hover:text-white transition-all duration-300 text-lg font-medium relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-green-400 after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:after:w-full cursor-pointer flex items-center gap-2">
+                Danh mục
+                <svg
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    isHoveringDanhMuc ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+
+              {isHoveringDanhMuc && (
+                <div className="absolute top-full left-0 mt-2 w-[320px] bg-gray-800 rounded-lg shadow-xl py-2 z-50">
+                  {typeList.map((type) => (
+                    <Link
+                      key={type.value}
+                      to={`/filter?type=${type.value}`}
+                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200"
+                    >
+                      {type.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </li>
+
             {/* Categories Dropdown */}
-            <li 
+            <li
               className="relative group"
               onMouseEnter={() => setIsHoveringCategory(true)}
               onMouseLeave={() => setIsHoveringCategory(false)}
             >
               <div className="text-gray-300 hover:text-white transition-all duration-300 text-lg font-medium relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-purple-400 after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:after:w-full cursor-pointer flex items-center gap-2">
                 Thể Loại
-                <svg className={`w-4 h-4 transition-transform duration-200 ${isHoveringCategory ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                <svg
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    isHoveringCategory ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </div>
 
@@ -85,15 +151,27 @@ function Header() {
             </li>
 
             {/* Countries Dropdown */}
-            <li 
+            <li
               className="relative group"
               onMouseEnter={() => setIsHoveringCountry(true)}
               onMouseLeave={() => setIsHoveringCountry(false)}
             >
               <div className="text-gray-300 hover:text-white transition-all duration-300 text-lg font-medium relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-pink-400 after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:after:w-full cursor-pointer flex items-center gap-2">
                 Quốc Gia
-                <svg className={`w-4 h-4 transition-transform duration-200 ${isHoveringCountry ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                <svg
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    isHoveringCountry ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </div>
 
@@ -115,12 +193,22 @@ function Header() {
         </nav>
 
         {/* Mobile menu button */}
-        <button 
+        <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="md:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors duration-300 transform hover:scale-105"
         >
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          <svg
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+            />
           </svg>
         </button>
 
@@ -134,7 +222,45 @@ function Header() {
               >
                 Trang chủ
               </Link>
-              
+
+              {/* Mobile Danh mục */}
+              <div className="space-y-1">
+                <button
+                  onClick={() => setIsHoveringDanhMuc(!isHoveringDanhMuc)}
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700"
+                >
+                  <span>Danh mục</span>
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isHoveringDanhMuc ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                {isHoveringDanhMuc && (
+                  <div className="pl-4 py-2 space-y-1 bg-gray-700 rounded-md mt-1">
+                    {typeList.map((type) => (
+                      <Link
+                        key={type.value}
+                        to={`/filter?type=${type.value}`}
+                        className="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-600 hover:text-white rounded-md"
+                      >
+                        {type.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               {/* Mobile Categories */}
               <div className="space-y-1">
                 <button
@@ -142,8 +268,20 @@ function Header() {
                   className="w-full flex items-center justify-between px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700"
                 >
                   <span>Thể Loại</span>
-                  <svg className={`w-4 h-4 transition-transform duration-200 ${isHoveringCategory ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isHoveringCategory ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
                 {isHoveringCategory && (
@@ -168,8 +306,20 @@ function Header() {
                   className="w-full flex items-center justify-between px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700"
                 >
                   <span>Quốc Gia</span>
-                  <svg className={`w-4 h-4 transition-transform duration-200 ${isHoveringCountry ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isHoveringCountry ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
                 {isHoveringCountry && (

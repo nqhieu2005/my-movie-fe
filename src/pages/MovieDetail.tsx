@@ -50,7 +50,7 @@ const MovieDetail = () => {
     const fetchMovieDetail = async () => {
       if (!slug) return;
       try {
-        const response = await fetch(`http://localhost:4000/api/movies/${slug}`);
+        const response = await fetch(`http://localhost:4000/api/movies/slug/${slug}`);
         const data: ApiResponse = await response.json();
         setMovieData(data);
 
