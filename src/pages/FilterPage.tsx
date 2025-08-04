@@ -119,8 +119,8 @@ function FilterPage() {
         const fetchData = async () => {
             try {
                 const [categoriesRes, countriesRes] = await Promise.all([
-                    fetch("http://localhost:4000/api/categories"),
-                    fetch("http://localhost:4000/api/country"),
+                    fetch("https://my-movies-be.onrender.com/api/categories"),
+                    fetch("https://my-movies-be.onrender.com/api/country"),
                 ]);
                 const [categoriesData, countriesData] = await Promise.all([
                     categoriesRes.json(),
@@ -159,7 +159,7 @@ function FilterPage() {
                 if (sortLang) filters.sort_lang = sortLang;
 
                 const queryParams = new URLSearchParams(filters).toString();
-                const url = `http://localhost:4000/api/movies/${typeList}?${queryParams}`;
+                const url = `https://my-movies-be.onrender.com/api/movies/${typeList}?${queryParams}`;
 
                 const response = await fetch(url);
                 if (!response.ok) {

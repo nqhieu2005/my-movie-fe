@@ -30,13 +30,13 @@ function Header() {
 
   useEffect(() => {
     // Fetch categories
-    fetch("http://localhost:4000/api/categories")
+    fetch("https://my-movies-be.onrender.com/api/categories")
       .then((res) => res.json())
       .then((data) => setCategories(data))
       .catch((err) => console.error("Error fetching categories:", err));
 
     // Fetch countries
-    fetch("http://localhost:4000/api/country")
+    fetch("https://my-movies-be.onrender.com//api/country")
       .then((res) => res.json())
       .then((data) => setCountries(data))
       .catch((err) => console.error("Error fetching countries:", err));

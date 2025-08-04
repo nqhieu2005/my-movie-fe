@@ -66,7 +66,7 @@ const MovieDetail = () => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:4000/api/movies/slug/${slug}`
+          `https://my-movies-be.onrender.com/api/movies/slug/${slug}`
         );
         const data: ApiResponse = await response.json();
         setMovieData(data);

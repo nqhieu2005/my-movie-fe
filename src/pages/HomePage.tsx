@@ -66,7 +66,7 @@
           setIsLoading(true);
           try {
             const response = await fetch(
-              `http://localhost:4000/api/movies/new?page=${currentPage}`
+              `https://my-movies-be.onrender.com/api/movies/new?page=${currentPage}`
             );
             const data: ApiResponse = await response.json();
             setMovie(data);
@@ -91,7 +91,7 @@
       
       try {
         const response = await fetch(
-          `http://localhost:4000/api/movies/search?keyword=${encodeURIComponent(searchKeyword)}&page=${currentPage}&limit=20`
+          `https://my-movies-be.onrender.com/movies/search?keyword=${encodeURIComponent(searchKeyword)}&page=${currentPage}&limit=20`
         );
         const data: SearchApiResponse = await response.json();
         setSearchResults(data);
@@ -107,7 +107,7 @@
         const searchWithPage = async () => {
           try {
             const response = await fetch(
-              `http://localhost:4000/api/movies/search?keyword=${encodeURIComponent(searchKeyword)}&page=${currentPage}&limit=20`
+              `https://my-movies-be.onrender.com/api/movies/search?keyword=${encodeURIComponent(searchKeyword)}&page=${currentPage}&limit=20`
             );
             const data: SearchApiResponse = await response.json();
             setSearchResults(data);
