@@ -10,10 +10,12 @@ interface Category {
 function Header() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [countries, setCountries] = useState<Category[]>([]);
-  const [isHoveringCategory, setIsHoveringCategory] = useState(false);
-  const [isHoveringCountry, setIsHoveringCountry] = useState(false);
-  const [isHoveringDanhMuc, setIsHoveringDanhMuc] = useState(false); // Thêm state cho Danh mục
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mobileDropdowns, setMobileDropdowns] = useState({
+    danhMuc: false,
+    theLoai: false,
+    quocGia: false,
+  });
 
   // Danh sách các type_list
   const typeList = [
@@ -40,23 +42,37 @@ function Header() {
       .catch((err) => console.error("Error fetching countries:", err));
   }, []);
 
+  const handleMobileDropdownToggle = (dropdown: keyof typeof mobileDropdowns) => {
+    setMobileDropdowns((prev) => ({
+      ...prev,
+      [dropdown]: !prev[dropdown],
+    }));
+  };
+
+  const closeMobileMenuAndDropdowns = () => {
+    setIsMobileMenuOpen(false);
+    setMobileDropdowns({
+      danhMuc: false,
+      theLoai: false,
+      quocGia: false,
+    });
+  };
+
   return (
     <header className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-4 px-6 shadow-lg">
       <div className="max-w-7xl mx-auto flex items-center justify-between relative">
         {/* Logo */}
-        <div className="flex items-center space-x-2">
-          <Link
-            to="https://www.facebook.com/nq.hie.05"
-            className="flex items-center group"
-          >
-            <img
-              src="/logo.png"
-              alt="Logo"
-              className="h-10 w-14 object-contain transform transition-transform hover:scale-110 duration-300"
-            />
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent ml-2 hover:from-purple-500 hover:to-blue-400 transition-all duration-300"></span>
-          </Link>
-        </div>
+<div className="flex items-center space-x-2">
+  <Link
+    to="/"
+    onClick={closeMobileMenuAndDropdowns}
+    className="flex items-center group"
+  >
+    <span className="text-3xl font-extrabold bg-gradient-to-r from-yellow-400 via-red-500 to-purple-600 bg-clip-text text-transparent transform transition-transform hover:scale-105 duration-300 drop-shadow-lg font-['Montserrat',sans-serif] tracking-wider">
+      CineStream
+    </span>
+  </Link>
+</div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:block">
@@ -70,124 +86,58 @@ function Header() {
               </Link>
             </li>
             
-            {/* Danh mục Dropdown - Updated */}
-            <li
-              className="relative group"
-              onMouseEnter={() => setIsHoveringDanhMuc(true)}
-              onMouseLeave={() => setIsHoveringDanhMuc(false)}
-            >
+            {/* Danh mục Dropdown */}
+            <li className="relative group">
               <div className="text-gray-300 hover:text-white transition-all duration-300 text-lg font-medium relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-green-400 after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:after:w-full cursor-pointer flex items-center gap-2">
                 Danh mục
-                <svg
-                  className={`w-4 h-4 transition-transform duration-200 ${
-                    isHoveringDanhMuc ? "rotate-180" : ""
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
               </div>
-
-              {isHoveringDanhMuc && (
-                <div className="absolute top-full left-0 mt-2 w-[320px] bg-gray-800 rounded-lg shadow-xl py-2 z-50">
-                  {typeList.map((type) => (
-                    <Link
-                      key={type.value}
-                      to={`/filter?type=${type.value}`}
-                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200"
-                    >
-                      {type.name}
-                    </Link>
-                  ))}
-                </div>
-              )}
+              <div className="absolute top-full left-0 mt-2 w-[320px] bg-gray-800 rounded-lg shadow-xl py-2 z-50 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300">
+                {typeList.map((type) => (
+                  <Link
+                    key={type.value}
+                    to={`/filter?type=${type.value}`}
+                    className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200"
+                  >
+                    {type.name}
+                  </Link>
+                ))}
+              </div>
             </li>
 
             {/* Categories Dropdown */}
-            <li
-              className="relative group"
-              onMouseEnter={() => setIsHoveringCategory(true)}
-              onMouseLeave={() => setIsHoveringCategory(false)}
-            >
+            <li className="relative group">
               <div className="text-gray-300 hover:text-white transition-all duration-300 text-lg font-medium relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-purple-400 after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:after:w-full cursor-pointer flex items-center gap-2">
                 Thể Loại
-                <svg
-                  className={`w-4 h-4 transition-transform duration-200 ${
-                    isHoveringCategory ? "rotate-180" : ""
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
               </div>
-
-              {isHoveringCategory && (
-                <div className="absolute top-full right-0 mt-2 w-[480px] bg-gray-800 rounded-lg shadow-xl py-2 z-50 grid grid-cols-3 gap-1">
-                  {categories.map((category) => (
-                    <Link
-                      key={category._id}
-                      to={`/category/${category.slug}`}
-                      className="px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200"
-                    >
-                      {category.name}
-                    </Link>
-                  ))}
-                </div>
-              )}
+              <div className="absolute top-full right-0 mt-2 w-[480px] bg-gray-800 rounded-lg shadow-xl py-2 z-50 grid grid-cols-3 gap-1 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300">
+                {categories.map((category) => (
+                  <Link
+                    key={category._id}
+                    to={`/filter?category=${category.slug}`}
+                    className="px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200"
+                  >
+                    {category.name}
+                  </Link>
+                ))}
+              </div>
             </li>
 
             {/* Countries Dropdown */}
-            <li
-              className="relative group"
-              onMouseEnter={() => setIsHoveringCountry(true)}
-              onMouseLeave={() => setIsHoveringCountry(false)}
-            >
+            <li className="relative group">
               <div className="text-gray-300 hover:text-white transition-all duration-300 text-lg font-medium relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-pink-400 after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:after:w-full cursor-pointer flex items-center gap-2">
                 Quốc Gia
-                <svg
-                  className={`w-4 h-4 transition-transform duration-200 ${
-                    isHoveringCountry ? "rotate-180" : ""
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
               </div>
-
-              {isHoveringCountry && (
-                <div className="absolute top-full right-0 mt-2 w-[480px] bg-gray-800 rounded-lg shadow-xl py-2 z-50 grid grid-cols-3 gap-1">
-                  {countries.map((country) => (
-                    <Link
-                      key={country._id}
-                      to={`/country/${country.slug}`}
-                      className="px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200"
-                    >
-                      {country.name}
-                    </Link>
-                  ))}
-                </div>
-              )}
+              <div className="absolute top-full right-0 mt-2 w-[480px] bg-gray-800 rounded-lg shadow-xl py-2 z-50 grid grid-cols-3 gap-1 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300">
+                {countries.map((country) => (
+                  <Link
+                    key={country._id}
+                    to={`/filter?country=${country.slug}`}
+                    className="px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200"
+                  >
+                    {country.name}
+                  </Link>
+                ))}
+              </div>
             </li>
           </ul>
         </nav>
@@ -218,6 +168,7 @@ function Header() {
             <div className="px-2 pt-2 pb-3 space-y-1">
               <Link
                 to="/"
+                onClick={closeMobileMenuAndDropdowns}
                 className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700"
               >
                 Trang chủ
@@ -226,32 +177,28 @@ function Header() {
               {/* Mobile Danh mục */}
               <div className="space-y-1">
                 <button
-                  onClick={() => setIsHoveringDanhMuc(!isHoveringDanhMuc)}
+                  onClick={() => handleMobileDropdownToggle("danhMuc")}
                   className="w-full flex items-center justify-between px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700"
                 >
                   <span>Danh mục</span>
                   <svg
                     className={`w-4 h-4 transition-transform duration-200 ${
-                      isHoveringDanhMuc ? "rotate-180" : ""
+                      mobileDropdowns.danhMuc ? "rotate-180" : ""
                     }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                {isHoveringDanhMuc && (
+                {mobileDropdowns.danhMuc && (
                   <div className="pl-4 py-2 space-y-1 bg-gray-700 rounded-md mt-1">
                     {typeList.map((type) => (
                       <Link
                         key={type.value}
                         to={`/filter?type=${type.value}`}
+                        onClick={closeMobileMenuAndDropdowns}
                         className="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-600 hover:text-white rounded-md"
                       >
                         {type.name}
@@ -264,32 +211,28 @@ function Header() {
               {/* Mobile Categories */}
               <div className="space-y-1">
                 <button
-                  onClick={() => setIsHoveringCategory(!isHoveringCategory)}
+                  onClick={() => handleMobileDropdownToggle("theLoai")}
                   className="w-full flex items-center justify-between px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700"
                 >
                   <span>Thể Loại</span>
                   <svg
                     className={`w-4 h-4 transition-transform duration-200 ${
-                      isHoveringCategory ? "rotate-180" : ""
+                      mobileDropdowns.theLoai ? "rotate-180" : ""
                     }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                {isHoveringCategory && (
+                {mobileDropdowns.theLoai && (
                   <div className="pl-4 py-2 space-y-1 bg-gray-700 rounded-md mt-1">
                     {categories.map((category) => (
                       <Link
                         key={category._id}
-                        to={`/category/${category.slug}`}
+                        to={`/filter?category=${category.slug}`}
+                        onClick={closeMobileMenuAndDropdowns}
                         className="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-600 hover:text-white rounded-md"
                       >
                         {category.name}
@@ -302,32 +245,28 @@ function Header() {
               {/* Mobile Countries */}
               <div className="space-y-1">
                 <button
-                  onClick={() => setIsHoveringCountry(!isHoveringCountry)}
+                  onClick={() => handleMobileDropdownToggle("quocGia")}
                   className="w-full flex items-center justify-between px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700"
                 >
                   <span>Quốc Gia</span>
                   <svg
                     className={`w-4 h-4 transition-transform duration-200 ${
-                      isHoveringCountry ? "rotate-180" : ""
+                      mobileDropdowns.quocGia ? "rotate-180" : ""
                     }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                {isHoveringCountry && (
+                {mobileDropdowns.quocGia && (
                   <div className="pl-4 py-2 space-y-1 bg-gray-700 rounded-md mt-1">
                     {countries.map((country) => (
                       <Link
                         key={country._id}
-                        to={`/country/${country.slug}`}
+                        to={`/filter?country=${country.slug}`}
+                        onClick={closeMobileMenuAndDropdowns}
                         className="block px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-600 hover:text-white rounded-md"
                       >
                         {country.name}
