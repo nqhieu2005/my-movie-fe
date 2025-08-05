@@ -284,9 +284,9 @@ const cdnDomain = isSearching ? searchResults?.data.APP_DOMAIN_CDN_IMAGE : undef
               {displayTitle}
             </h1>
             <div className="flex items-center justify-center gap-2 text-white/60">
-              <FaFilm className="animate-pulse" />
-              <span>Trang web được tạo bởi sự ngẫu hứng nên vẫn còn vài lỗi lặt vặt không thèm sửa hihi</span>
-              <span>Liên Quân là game rác..., nhưng vẫn chơi :((</span>
+              {/* <FaFilm className="animate-pulse" /> */}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500 font-bold text-1.5xl animate-pulse">Độc Lập - Tự Do - Hạnh Phúc</span>
+              
             </div>
           </div>
 
