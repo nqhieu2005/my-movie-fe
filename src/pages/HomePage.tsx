@@ -1,6 +1,6 @@
   import { useState, useEffect } from "react";
   import MovieCard from "../components/MovieCard";
-  import { FaChevronLeft, FaChevronRight, FaSearch, FaTimes, FaFilm } from "react-icons/fa";
+  import { FaChevronLeft, FaChevronRight, FaSearch, FaTimes } from "react-icons/fa";
 
   interface ApiResponse {
     status: boolean;
