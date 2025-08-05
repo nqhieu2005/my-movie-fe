@@ -286,6 +286,7 @@ const cdnDomain = isSearching ? searchResults?.data.APP_DOMAIN_CDN_IMAGE : undef
             <div className="flex items-center justify-center gap-2 text-white/60">
               <FaFilm className="animate-pulse" />
               <span>Trang web được tạo bởi sự ngẫu hứng nên vẫn còn vài lỗi lặt vặt không thèm sửa hihi</span>
+              <span>Liên Quân là game rác..., nhưng vẫn chơi :((</span>
             </div>
           </div>
 
