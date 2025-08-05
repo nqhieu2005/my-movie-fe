@@ -15,15 +15,19 @@ interface Movie {
 
 interface MovieCardProps {
   movie: Movie;
+  cdnDomain?: string;
 }
 
-const MovieCard = ({ movie }: MovieCardProps) => {
+const MovieCard = ({ movie, cdnDomain  }: MovieCardProps) => {
+  const fullImageUrl = cdnDomain && movie.poster_url 
+    ? `${cdnDomain}${movie.poster_url}`
+    : movie.poster_url;
   return (
     <div className="group relative bg-white/5 backdrop-blur-md rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20">
       <Link to={`/movies/${movie.slug}`}>
         <div className="relative w-full h-80 overflow-hidden">
           <img
-            src={movie.poster_url}
+            src={fullImageUrl}
             alt={movie.name}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />

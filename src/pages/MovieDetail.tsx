@@ -71,12 +71,14 @@ const MovieDetail = () => {
         const data: ApiResponse = await response.json();
         setMovieData(data);
 
+        // Logic tự động chọn tập mới nhất
         if (
           data.episodes &&
           data.episodes[0] &&
-          data.episodes[0].server_data[0]
+          data.episodes[0].server_data.length > 0
         ) {
-          setSelectedEpisode(data.episodes[0].server_data[0]);
+          const latestEpisode = data.episodes[0].server_data[data.episodes[0].server_data.length - 1];
+          setSelectedEpisode(latestEpisode);
         }
       } catch (error) {
         console.error("Lỗi khi lấy dữ liệu phim:", error);
@@ -243,7 +245,13 @@ const MovieDetail = () => {
                     {server.server_data.map((episode, episodeIndex) => (
                       <button
                         key={episode.slug}
-                        onClick={() => setSelectedEpisode(episode)}
+                        onClick={() => {
+                          setSelectedEpisode(episode);
+                          window.scrollTo({
+                            top: 0,
+                            behavior: "smooth"
+                          });
+                        }}
                         className={`px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105 ${
                           selectedEpisode?.slug === episode.slug
                             ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg"

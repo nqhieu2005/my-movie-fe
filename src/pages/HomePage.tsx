@@ -47,6 +47,8 @@
           totalPages: number;
         };
       };
+      APP_DOMAIN_FRONTEND: string;
+      APP_DOMAIN_CDN_IMAGE: string;
     };
   }
 
@@ -91,7 +93,7 @@
       
       try {
         const response = await fetch(
-          `https://my-movies-be.onrender.com/movies/search?keyword=${encodeURIComponent(searchKeyword)}&page=${currentPage}&limit=20`
+          `https://my-movies-be.onrender.com/api/movies/search?keyword=${encodeURIComponent(searchKeyword)}&page=${currentPage}&limit=20`
         );
         const data: SearchApiResponse = await response.json();
         setSearchResults(data);
@@ -227,7 +229,9 @@
     }
 
     // Lấy danh sách phim để hiển thị
-    const displayMovies = isSearching ? searchResults?.data.items : movie?.items;
+const displayMovies = isSearching ? searchResults?.data.items ?? [] : movie?.items;
+// Lấy tên miền CDN nếu đang trong chế độ tìm kiếm
+const cdnDomain = isSearching ? searchResults?.data.APP_DOMAIN_CDN_IMAGE : undefined;
     const displayTitle = isSearching 
       ? `Kết quả tìm kiếm: "${searchKeyword}"` 
       : "Phim mới cập nhật";
@@ -281,7 +285,7 @@
             </h1>
             <div className="flex items-center justify-center gap-2 text-white/60">
               <FaFilm className="animate-pulse" />
-              <span>Khám phá thế giới điện ảnh</span>
+              <span>Trang web được tạo bởi sự ngẫu hứng nên vẫn còn vài lỗi lặt vặt không thèm sửa hihi</span>
             </div>
           </div>
 
@@ -294,7 +298,7 @@
                   className="animate-fade-in-up"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <MovieCard movie={movie} />
+                  <MovieCard movie={movie} cdnDomain={cdnDomain} />
                 </div>
               ))}
             </div>
