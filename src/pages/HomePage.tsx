@@ -285,7 +285,7 @@ const cdnDomain = isSearching ? searchResults?.data.APP_DOMAIN_CDN_IMAGE : undef
             </h1>
             <div className="flex items-center justify-center gap-2 text-white/60">
               {/* <FaFilm className="animate-pulse" /> */}
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500 font-bold text-1.5xl animate-pulse">Độc Lập - Tự Do - Hạnh Phúc</span>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500 font-bold text-1.5xl animate-pulse">Web được update vào 6/8/2025</span>
               
             </div>
           </div>
