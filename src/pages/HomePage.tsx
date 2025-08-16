@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
-import { FaChevronLeft, FaChevronRight, FaSearch, FaTimes } from "react-icons/fa";
+import {
+  FaChevronLeft,
+  FaChevronRight,
+  FaSearch,
+  FaTimes,
+} from "react-icons/fa";
 import useCurrentDateTime from "../components/UseCurrentDateTime";
 
 interface ApiResponse {
@@ -15,7 +20,7 @@ interface ApiResponse {
     tmdb: {
       vote_average: number;
       vote_count: number;
-    }
+    };
   }[];
   pagination: {
     totalItems: number;
@@ -29,17 +34,19 @@ interface SearchApiResponse {
   status: string;
   msg: string;
   data: {
-    items: {
-      _id: string;
-      name: string;
-      slug: string;
-      poster_url: string;
-      year: number;
-      tmdb: {
-        vote_average: number;
-        vote_count: number;
-      }
-    }[] | null;
+    items:
+      | {
+          _id: string;
+          name: string;
+          slug: string;
+          poster_url: string;
+          year: number;
+          tmdb: {
+            vote_average: number;
+            vote_count: number;
+          };
+        }[]
+      | null;
     params: {
       pagination: {
         totalItems: number;
@@ -59,7 +66,9 @@ function HomePage() {
   const [totalPages, setTotalPages] = useState(0);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [isSearching, setIsSearching] = useState(false);
-  const [searchResults, setSearchResults] = useState<SearchApiResponse | null>(null);
+  const [searchResults, setSearchResults] = useState<SearchApiResponse | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(true);
   const { date, time } = useCurrentDateTime();
 
@@ -92,10 +101,12 @@ function HomePage() {
 
     setIsSearching(true);
     setCurrentPage(1);
-    
+
     try {
       const response = await fetch(
-        `https://my-movies-be.onrender.com/api/movies/search?keyword=${encodeURIComponent(searchKeyword)}&page=${currentPage}&limit=20`
+        `https://my-movies-be.onrender.com/api/movies/search?keyword=${encodeURIComponent(
+          searchKeyword
+        )}&page=${currentPage}&limit=20`
       );
       const data: SearchApiResponse = await response.json();
       setSearchResults(data);
@@ -111,7 +122,9 @@ function HomePage() {
       const searchWithPage = async () => {
         try {
           const response = await fetch(
-            `https://my-movies-be.onrender.com/api/movies/search?keyword=${encodeURIComponent(searchKeyword)}&page=${currentPage}&limit=20`
+            `https://my-movies-be.onrender.com/api/movies/search?keyword=${encodeURIComponent(
+              searchKeyword
+            )}&page=${currentPage}&limit=20`
           );
           const data: SearchApiResponse = await response.json();
           setSearchResults(data);
@@ -231,11 +244,15 @@ function HomePage() {
   }
 
   // Lấy danh sách phim để hiển thị
-  const displayMovies = isSearching ? searchResults?.data.items ?? [] : movie?.items;
+  const displayMovies = isSearching
+    ? searchResults?.data.items ?? []
+    : movie?.items;
   // Lấy tên miền CDN nếu đang trong chế độ tìm kiếm
-  const cdnDomain = isSearching ? searchResults?.data.APP_DOMAIN_CDN_IMAGE : undefined;
-  const displayTitle = isSearching 
-    ? `Kết quả tìm kiếm: "${searchKeyword}"` 
+  const cdnDomain = isSearching
+    ? searchResults?.data.APP_DOMAIN_CDN_IMAGE
+    : undefined;
+  const displayTitle = isSearching
+    ? `Kết quả tìm kiếm: "${searchKeyword}"`
     : "Phim mới cập nhật";
 
   // Debug logs
@@ -259,7 +276,10 @@ function HomePage() {
       <div className="relative z-10 p-6">
         {/* Search Bar */}
         <div className="mb-12 animate-fade-in">
-          <form onSubmit={handleSearch} className="flex items-center gap-4 max-w-2xl mx-auto">
+          <form
+            onSubmit={handleSearch}
+            className="flex items-center gap-4 max-w-2xl mx-auto"
+          >
             <div className="relative flex-1 group">
               <input
                 type="text"
@@ -295,10 +315,14 @@ function HomePage() {
             {displayTitle}
           </h1>
           <div className="flex items-center justify-center gap-2 text-white/60">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500 font-bold text-1.5xl animate-pulse">Bây giờ là {time} | {date}. Chúc các bạn xem phim vui vẻ</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500 font-bold text-1.5xl animate-pulse">
+              Bây giờ là {time} | {date}. Chúc các bạn xem phim vui vẻ
+            </span>
           </div>
           <div className="flex items-center justify-center gap-2 text-white/60">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500 font-bold text-1.5xl animate-pulse">Note: trang web hoạt động ổn định nhất trên PC</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500 font-bold text-1.5xl animate-pulse">
+              Note: trang web hoạt động ổn định nhất trên PC
+            </span>
           </div>
         </div>
 
@@ -319,7 +343,9 @@ function HomePage() {
           <div className="text-center p-12 animate-fade-in">
             <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 max-w-md mx-auto border border-white/20">
               <FaSearch className="text-6xl text-white/40 mx-auto mb-4" />
-              <p className="text-white text-xl mb-4">Không tìm thấy phim nào với từ khóa "{searchKeyword}"</p>
+              <p className="text-white text-xl mb-4">
+                Không tìm thấy phim nào với từ khóa "{searchKeyword}"
+              </p>
               <button
                 onClick={clearSearch}
                 className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105"
@@ -332,11 +358,11 @@ function HomePage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-center items-center mt-16 space-x-4 animate-fade-in animation-delay-700">
+          <div className="flex justify-center items-center mt-8 space-x-2 animate-fade-in animation-delay-700">
             <button
               onClick={handlePreviousPage}
               disabled={currentPage === 1}
-              className={`p-3 rounded-full transition-all duration-300 transform hover:scale-110 ${
+              className={`p-2 rounded-full transition-all duration-300 transform hover:scale-110 ${
                 currentPage === 1
                   ? "bg-white/10 text-white/30 cursor-not-allowed"
                   : "bg-white/10 backdrop-blur-md text-white hover:bg-white/20 border border-white/20"
@@ -344,13 +370,15 @@ function HomePage() {
             >
               <FaChevronLeft />
             </button>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1">
+              {" "}
+              {/* Khoảng cách giữa các số trang đã giảm */}
               {renderPagination()}
             </div>
             <button
               onClick={handleNextPage}
               disabled={currentPage === totalPages}
-              className={`p-3 rounded-full transition-all duration-300 transform hover:scale-110 ${
+              className={`p-2 rounded-full transition-all duration-300 transform hover:scale-110 ${
                 currentPage === totalPages
                   ? "bg-white/10 text-white/30 cursor-not-allowed"
                   : "bg-white/10 backdrop-blur-md text-white hover:bg-white/20 border border-white/20"
