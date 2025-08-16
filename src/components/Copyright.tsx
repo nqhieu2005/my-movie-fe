@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { FaHeart, FaFacebook } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
 
 function Copyright() {
   const [isVisible, setIsVisible] = useState(false);
@@ -35,8 +35,8 @@ function Copyright() {
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-4">
-                <span className="text-white/60">Made with</span>
-                <FaHeart className="text-red-500 animate-pulse" />
+                <span className="text-white/60">Made</span>
+                {/* <FaHeart className="text-red-500 animate-pulse" /> */}
                 <span className="text-white/60">by</span>
                 <a
                   href="https://www.facebook.com/nq.hie.05"

@@ -20,8 +20,17 @@ interface MovieCardProps {
 
 const MovieCard = ({ movie, cdnDomain  }: MovieCardProps) => {
   const fullImageUrl = cdnDomain && movie.poster_url 
-    ? `${cdnDomain}${movie.poster_url}`
+    ? `${cdnDomain}/${movie.poster_url}`
     : movie.poster_url;
+  
+  // Debug logs
+  // console.log("MovieCard Debug:");
+  // console.log("- cdnDomain:", cdnDomain);
+  // console.log("- poster_url:", movie.poster_url);
+  // console.log("- fullImageUrl:", fullImageUrl);
+  // console.log("- movie name:", movie.name);
+  // console.log("---");
+  
   return (
     <div className="group relative bg-white/5 backdrop-blur-md rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20">
       <Link to={`/movies/${movie.slug}`}>
@@ -30,6 +39,13 @@ const MovieCard = ({ movie, cdnDomain  }: MovieCardProps) => {
             src={fullImageUrl}
             alt={movie.name}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            onError={(e) => {
+              // console.log("Image load error:", fullImageUrl);
+              e.currentTarget.src = "https://via.placeholder.com/300x450?text=No+Image";
+            }}
+            onLoad={() => {
+              // console.log("Image loaded successfully:", fullImageUrl);
+            }}
           />
           
           {/* Overlay with play button */}
