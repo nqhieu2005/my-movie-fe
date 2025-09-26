@@ -5,6 +5,11 @@ import {
   FaChevronRight,
   FaSearch,
   FaTimes,
+  FaStar,
+  FaGift,
+  FaHeart,
+  FaSmile,
+  FaUserFriends
 } from "react-icons/fa";
 import useCurrentDateTime from "../components/UseCurrentDateTime";
 
@@ -70,7 +75,13 @@ function HomePage() {
     null
   );
   const [isLoading, setIsLoading] = useState(true);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const { date, time } = useCurrentDateTime();
+
+  // Hiển thị modal chào mừng khi component mount
+  useEffect(() => {
+    setShowWelcomeModal(true);
+  }, []);
 
   // Fetch movies mới cập nhật
   useEffect(() => {
@@ -143,6 +154,11 @@ function HomePage() {
     setIsSearching(false);
     setSearchResults(null);
     setCurrentPage(1);
+  };
+
+  // Đóng modal chào mừng
+  const closeWelcomeModal = () => {
+    setShowWelcomeModal(false);
   };
 
   const handlePreviousPage = () => {
@@ -255,17 +271,77 @@ function HomePage() {
     ? `Kết quả tìm kiếm: "${searchKeyword}"`
     : "Phim mới cập nhật";
 
-  // Debug logs
-  // console.log("isSearching:", isSearching);
-  // console.log("searchResults:", searchResults);
-  // console.log("cdnDomain:", cdnDomain);
-  // console.log("displayMovies:", displayMovies);
-  // if (displayMovies && displayMovies.length > 0) {
-  //   console.log("First movie poster_url:", displayMovies[0]?.poster_url);
-  // }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 relative overflow-hidden">
+      {/* Welcome Modal */}
+      {showWelcomeModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fade-in">
+          <div className="relative bg-gradient-to-br from-purple-900/90 to-blue-900/90 backdrop-blur-lg rounded-3xl p-8 max-w-md mx-4 border border-white/20 shadow-2xl animate-scale-in">
+            {/* Nút đóng */}
+            <button
+              onClick={closeWelcomeModal}
+              className="absolute top-4 right-4 p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-full transition-all duration-300 transform hover:scale-110"
+            >
+              <FaTimes size={18} />
+            </button>
+
+            {/* Nội dung modal */}
+            <div className="text-center">
+              {/* Icon chào mừng */}
+              <div className="mb-6">
+                <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+                  <FaUserFriends className="text-white text-3xl" />
+                </div>
+              </div>
+
+              {/* Tiêu đề */}
+              <h2 className="text-3xl font-bold text-white mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                Welcome
+              </h2>
+
+              {/* Nội dung */}
+              <div className="space-y-4 mb-6 text-white/90">
+                <div className="flex items-center space-x-3">
+                  <FaStar className="text-yellow-400 flex-shrink-0" />
+                  <p className="text-left">Thưởng thức hàng ngàn bộ phim chất lượng cao</p>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <FaGift className="text-pink-400 flex-shrink-0" />
+                  <p className="text-left">Cập nhật phim mới nhất hàng ngày</p>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <FaHeart className="text-red-400 flex-shrink-0" />
+                  <p className="text-left">Giao diện thân thiện, dễ sử dụng</p>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <FaSmile className="text-red-400 flex-shrink-0" />
+                  <p className="text-left">Kinh phí duy trì server hạn hẹp, thường sẽ load chậm vào cuối tháng.</p>
+                </div>
+              </div>
+
+              {/* Special offer */}
+              <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-400/30 rounded-2xl p-4 mb-6">
+                <p className="text-yellow-300 font-semibold text-sm">
+                  🎉 Đặc biệt: Xem phim miễn phí 100%! 🎉
+                </p>
+              </div>
+
+              {/* Nút bắt đầu */}
+              <button
+                onClick={closeWelcomeModal}
+                className="w-full px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-semibold"
+              >
+                Bắt đầu xem phim ngay!
+              </button>
+            </div>
+
+            {/* Decorative elements */}
+            <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full opacity-60 animate-ping"></div>
+            <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full opacity-40 animate-bounce"></div>
+          </div>
+        </div>
+      )}
+
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
